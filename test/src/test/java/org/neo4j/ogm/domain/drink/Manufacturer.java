@@ -21,6 +21,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Labels;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 import org.neo4j.ogm.id.UuidStrategy;
 
 /**
@@ -43,6 +44,9 @@ public class Manufacturer {
 
     @Labels
     private Set<String> labels;
+
+    @Transient
+    private Boolean flag;
 
     public Manufacturer() {
     }
@@ -95,6 +99,7 @@ public class Manufacturer {
     }
 
     public void setLabels(Set<String> labels) {
+        flag = labels != null && labels.contains("FLAG");
         this.labels = labels;
     }
 
@@ -104,4 +109,18 @@ public class Manufacturer {
         }
         labels.add(label);
     }
+
+    public Boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Boolean flag) {
+        if (flag != null && flag) {
+            addLabel("FLAG");
+        } else {
+            labels.remove("FLAG");
+        }
+        this.flag = flag;
+    }
+
 }

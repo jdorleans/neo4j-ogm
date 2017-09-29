@@ -344,6 +344,19 @@ public class DrinkIntegrationTest extends MultiDriverTestClass {
         assertThat(loaded.getLabels()).isEmpty();
     }
 
+    @Test
+    public void shouldSetLabelsWhenLoading() throws Exception {
+        Manufacturer manufacturer = new Manufacturer("Any");
+        manufacturer.setFlag(true);
+        session.save(manufacturer);
+        session.clear();
+
+        Manufacturer loaded = session.load(Manufacturer.class, manufacturer.getUuid());
+        assertThat(loaded.getLabels()).containsOnly("FLAG");
+        assertThat(loaded.getFlag()).isTrue();
+    }
+
+
     private void assertBeverageAndManufacturerInDB(Beverage beverage, Manufacturer manufacturer) {
         Beverage loaded = session.load(Beverage.class, beverage.getUuid());
         assertThat(loaded.getName()).isEqualTo(beverage.getName());
